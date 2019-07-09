@@ -1,0 +1,16 @@
+{% extends 'layout-2-1-bleedbar.html' %}
+{# import any other needed atoms, elements here #}
+{% import 'templates/render_block.html' as render_block with context %}
+
+{% block hero -%}
+    {% for block in page.header -%}
+        {{ render_block.render(block, loop.index) }}
+    {%- endfor %}
+{% endblock %}
+
+{% block content_main %}
+
+{# page content here #}
+
+
+{% endblock %}
