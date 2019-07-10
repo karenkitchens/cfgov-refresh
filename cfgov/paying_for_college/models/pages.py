@@ -39,7 +39,7 @@ class StudentResourcesPage(CFGOVPage):
         ObjectList(CFGOVPage.settings_panels, heading='Configuration'),
     ])
     objects = CFGOVPageManager()
-    template = 'paying_for_college/repaying-student-debt.html'
+    template = 'paying-for-college/repaying-student-debt.html'
 
     @property
     def page_js(self):
