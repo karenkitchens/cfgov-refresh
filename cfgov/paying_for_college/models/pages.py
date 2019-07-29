@@ -11,7 +11,7 @@ from v1.models import CFGOVPage, CFGOVPageManager
 
 
 class StudentResourcesPage(CFGOVPage):
-    """A page to serve subpages of payint-for-college."""
+    """A page to serve subpages of paying-for-college."""
     header = StreamField([
         ('text_introduction', molecules.TextIntroduction()),
         ('featured_content', organisms.FeaturedContent()),
@@ -39,7 +39,10 @@ class StudentResourcesPage(CFGOVPage):
         ObjectList(CFGOVPage.settings_panels, heading='Configuration'),
     ])
     objects = CFGOVPageManager()
-    template = 'paying-for-college/repaying-student-debt.html'
+
+    def get_template(self, request):
+        return 'paying-for-college/{}.html'.format(
+            self.slug)
 
     @property
     def page_js(self):
