@@ -6,6 +6,7 @@ import six
 import smtplib
 import unittest
 
+from django.http import HttpRequest
 from django.test import TestCase
 from django.utils import timezone
 
@@ -13,8 +14,11 @@ import requests
 from paying_for_college.apps import PayingForCollegeConfig
 from paying_for_college.models import (
     Alias, ConstantCap, ConstantRate, Contact, Feedback, Nickname,
-    Notification, Program, School, get_region, make_divisible_by_6
+    Notification, Program, School, StudentResourcesPage, get_region,
+    make_divisible_by_6
 )
+
+from v1.models import HomePage
 
 
 if six.PY2:  # pragma: no cover
@@ -55,6 +59,38 @@ class PayingForCollegeConfigTest(unittest.TestCase):
 
     def test_app_config(self):
         self.assertEqual(PayingForCollegeConfig.name, 'paying_for_college')
+
+
+class PageModelsTest(TestCase):
+
+    def setUp(self):
+
+        def create_page(model, title, slug, parent):
+            new_page = model(
+                live=False,
+                title=title,
+                slug=slug)
+            parent.add_child(instance=new_page)
+            new_page.save()
+            return new_page
+        self.ROOT_PAGE = HomePage.objects.get(slug='cfgov')
+        self.debt_page = create_page(
+            StudentResourcesPage,
+            'Repaying student debt',
+            'repaying-student-debt',
+            self.ROOT_PAGE
+        )
+
+    def test_student_resources_get_template(self):
+        self.assertEqual(
+            self.debt_page.get_template(HttpRequest()),
+            'paying-for-college/{}.html'.format(self.debt_page.slug)
+        )
+
+    def test_student_resources_page_js(self):
+        self.assertIn(
+            'secondary-navigation.js',
+            self.debt_page.page_js)
 
 
 class SchoolModelsTest(TestCase):
