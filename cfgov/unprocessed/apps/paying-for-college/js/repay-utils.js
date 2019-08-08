@@ -1,18 +1,5 @@
 // Utilities to help repay.js work
 
-const closest = function( elem, selector ) {
-  let parent;
-  while ( elem ) {
-    parent = elem.parentElement;
-    if ( parent && parent.matches( selector ) ) {
-      return parent;
-    }
-
-    elem = parent;
-  }
-  return null;
-}
-
 const hide = function( haystack, selector ) {
   if ( typeof selector === 'undefined' ) {
     haystack.style.display = 'none';
@@ -120,7 +107,6 @@ const getYLocation = el => {
 };
 
 module.exports = {
-  closest,
   hide,
   show,
   getElementHeight,
