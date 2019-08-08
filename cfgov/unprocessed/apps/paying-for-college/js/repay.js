@@ -1,6 +1,5 @@
-
+import closest from '../../../js/modules/util/dom-traverse';
 import {
-  closest,
   hide,
   show,
   getElementHeight,
