@@ -12,5 +12,8 @@
     "url": "https://github.com/cfpb/cfgov-refresh.git"
   },
   "private": "true",
-  "license": "SEE LICENSE IN TERMS.md"
+  "license": "SEE LICENSE IN TERMS.md",
+  "dependencies": {
+    "student-debt-calc": "2.6.5"
+  }
 }
