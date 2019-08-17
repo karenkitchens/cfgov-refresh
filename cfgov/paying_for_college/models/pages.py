@@ -6,6 +6,7 @@ from wagtail.wagtailadmin.edit_handlers import (
 from wagtail.wagtailcore import blocks
 from wagtail.wagtailcore.fields import StreamField
 
+from paying_for_college.models.blocks import GuidedQuiz
 from v1.atomic_elements import molecules, organisms
 from v1.models import CFGOVPage, CFGOVPageManager
 
@@ -19,6 +20,7 @@ class StudentResourcesPage(CFGOVPage):
 
     content = StreamField([
         ('full_width_text', organisms.FullWidthText()),
+        ('guided_quiz', GuidedQuiz()),
         ('info_unit_group', organisms.InfoUnitGroup()),
         ('expandable_group', organisms.ExpandableGroup()),
         ('expandable', organisms.Expandable()),
