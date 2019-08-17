@@ -1,0 +1,36 @@
+
+{# ==========================================================================
+
+   Quiz Answers block
+
+   ==========================================================================
+
+   Description:
+
+   Provides a structure for a series of answers to a guided-quiz question:
+
+   value: Object defined from a Streamfield block.
+
+   value.answers:               List of answer components
+
+   FOR EACH ANSWER:
+
+   answer.choice_letter:        Letter label for an answer choice
+
+   answer.answer_choice:        Text of the answer choice
+
+   answer.answer_response:      Response explanation (right or wrong)
+
+   ========================================================================== #}
+
+
+<div class="">
+    {% for answer in value.answers %}
+    <div class="">
+          {{ answer.choice_letter }} {{ answer.answer_choise }}
+    </div>
+    <div class="quiz-response">
+      {{ answer.answer_response |  | richtext}}
+    </div>
+    {% endfor %}
+</div>

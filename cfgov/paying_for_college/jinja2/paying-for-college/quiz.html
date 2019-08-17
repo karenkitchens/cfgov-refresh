@@ -1,0 +1,28 @@
+
+{# ==========================================================================
+
+   Guided Quiz block
+
+   ==========================================================================
+
+   Description:
+
+   Framework for a guided-quiz section, including a situation setup.
+
+   value: Object defined from a Streamfield block.
+
+   value.situation:            The setup (use-case) for this set of questions
+
+   value.questions:            The block of question, choices and answers
+
+   ========================================================================== #}
+
+
+<div class="">
+    <div class="quiz-situation">
+          {{ value.situation | richtext }}
+    </div>
+    <div class="quiz-response">
+      {{ include_block value.questions }}
+    </div>
+</div>
