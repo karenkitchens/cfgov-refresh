@@ -16,7 +16,7 @@ class QuizAnswers(blocks.StructBlock):
         ]))
 
     class Meta:
-        template = 'paying_for_college/quiz-answers.html'
+        template = 'paying-for-college/quiz-answers.html'
 
 
 class GuidedQuiz(blocks.StructBlock):
@@ -29,11 +29,17 @@ class GuidedQuiz(blocks.StructBlock):
     )
     questions = blocks.ListBlock(
         blocks.StructBlock([
-            ('question', blocks.CharBlock(max_length=500)),
+            ('question', blocks.RichTextBlock(
+                features=[
+                    'ol', 'ul', 'bold', 'italic', 'link', 'document-link'
+                ],
+                blank=True,
+                required=False,
+            )),
             ('answers', QuizAnswers()),
         ]))
 
     class Meta:
         icon = 'grip'
-        template = 'paying_for_college/quiz.html'
+        template = 'paying-for-college/quiz.html'
         label = 'Guided Quiz'

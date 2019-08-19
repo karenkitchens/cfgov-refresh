@@ -17,12 +17,18 @@
 
    ========================================================================== #}
 
+{% import 'templates/render_block.html' as render_block with context %}
 
 <div class="">
     <div class="quiz-situation">
+      <h3> Situation </h3> 
+        <p> 
           {{ value.situation | richtext }}
+        </p>
     </div>
     <div class="quiz-response">
-      {{ include_block value.questions }}
+      {% for question in value.questions %}
+      <div>{{ question }}</div>
+      {% endfor %}
     </div>
 </div>

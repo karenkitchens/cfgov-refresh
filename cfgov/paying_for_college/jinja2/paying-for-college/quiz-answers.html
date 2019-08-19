@@ -27,10 +27,12 @@
 <div class="">
     {% for answer in value.answers %}
     <div class="">
-          {{ answer.choice_letter }} {{ answer.answer_choise }}
+          <span><strong>{{ answer.choice_letter }}</strong></span> {{ answer.answer_choice }}
     </div>
-    <div class="quiz-response">
-      {{ answer.answer_response |  | richtext}}
-    </div>
-    {% endfor %}
+    {% if answer.answer_response %}
+    <details>
+      <summary>Reveal</summary>
+      {{ answer.answer_response | richtext}}
+    </details>
+    {% endif %}{% endfor %}
 </div>
