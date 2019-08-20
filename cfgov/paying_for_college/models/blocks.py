@@ -8,7 +8,8 @@ class QuizAnswers(blocks.StructBlock):
             ('answer_choice', blocks.CharBlock(max_length=500)),
             ('answer_response', blocks.RichTextBlock(
                 features=[
-                    'ol', 'ul', 'bold', 'italic', 'link', 'document-link'
+                    'ol', 'ul', 'bold', 'italic',
+                    'link', 'image', 'document-link',
                 ],
                 blank=True,
                 required=False,
@@ -22,7 +23,7 @@ class QuizAnswers(blocks.StructBlock):
 class GuidedQuiz(blocks.StructBlock):
     situation = blocks.RichTextBlock(
         features=[
-            'ol', 'ul', 'bold', 'italic', 'link', 'document-link'
+            'ol', 'ul', 'bold', 'italic', 'link', 'image', 'document-link',
         ],
         blank=True,
         required=False,
@@ -31,7 +32,8 @@ class GuidedQuiz(blocks.StructBlock):
         blocks.StructBlock([
             ('question', blocks.RichTextBlock(
                 features=[
-                    'ol', 'ul', 'bold', 'italic', 'link', 'document-link'
+                    'ol', 'ul', 'bold', 'italic',
+                    'link', 'image', 'document-link',
                 ],
                 blank=True,
                 required=False,
