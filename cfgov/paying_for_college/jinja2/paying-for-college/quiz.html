@@ -15,12 +15,14 @@
 
    value.questions:            The block of question, choices and answers
 
+   value.situation_id:         Unique value for this set of quiz questions
+
    ========================================================================== #}
 
 {% import 'templates/render_block.html' as render_block with context %}
 
 <div class="">
-    <div class="quiz-situation">
+    <div class="quiz-situation" id="{{ value.situation_id }}">
       <h3> Situation </h3> 
         <p> 
           {{ value.situation | richtext }}

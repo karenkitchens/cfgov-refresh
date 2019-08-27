@@ -43,6 +43,8 @@ class StudentResourcesPage(CFGOVPage):
     objects = CFGOVPageManager()
 
     def get_template(self, request):
+        for block in self.content:
+            block.value['situation_id'] = block.id
         return 'paying-for-college/{}.html'.format(
             self.slug)
 
