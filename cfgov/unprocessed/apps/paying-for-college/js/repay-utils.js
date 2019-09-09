@@ -45,7 +45,7 @@ const getElementHeight = function( elem ) {
   return height;
 }
 
-const slide = function( direction, elem  ) {
+const slide = function( direction, elem, callback  ) {
   if ( elem === null ) {
   	// console.log( 'ERR: null element passed to slide.' );
   	return;

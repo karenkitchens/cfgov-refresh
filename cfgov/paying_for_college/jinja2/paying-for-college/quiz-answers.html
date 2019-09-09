@@ -24,15 +24,20 @@
    ========================================================================== #}
 
 
-<div class="">
+<div class="quiz__answers m-form-field m-form-field__radio">
     {% for answer in value.answers %}
-    <div class="">
-          <span><strong>{{ answer.choice_letter }}</strong></span> {{ answer.answer_choice }}
+    <div class="quiz__answer">
+          <div class="quiz__answer-choice">
+            <input class="a-radio" type="radio">
+            <label for="" class="a-label">
+              <span>{{ answer.answer_choice }}</span>
+            </label>
+          </div>
+      {% if answer.answer_response %}
+          <div class="quiz__answer-response">
+            {{ answer.answer_response | richtext}}
+          </div>
+      {% endif %}
     </div>
-    {% if answer.answer_response %}
-    <details>
-      <summary>Reveal</summary>
-      {{ answer.answer_response | richtext}}
-    </details>
-    {% endif %}{% endfor %}
+{% endfor %}
 </div>
