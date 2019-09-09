@@ -4,7 +4,8 @@ from wagtail.wagtailcore import blocks
 class QuizAnswers(blocks.StructBlock):
     answers = blocks.ListBlock(
         blocks.StructBlock([
-            ('choice_letter', blocks.CharBlock(max_length=20)),
+            ('choice_letter', blocks.CharBlock(
+                max_length=20, required=False)),
             ('answer_choice', blocks.CharBlock(max_length=500)),
             ('answer_response', blocks.RichTextBlock(
                 features=[
@@ -30,6 +31,8 @@ class GuidedQuiz(blocks.StructBlock):
     )
     questions = blocks.ListBlock(
         blocks.StructBlock([
+            ('subtitle', blocks.CharBlock(
+                max_length=500, required=False)),
             ('question', blocks.RichTextBlock(
                 features=[
                     'ol', 'ul', 'bold', 'italic',
@@ -40,6 +43,13 @@ class GuidedQuiz(blocks.StructBlock):
             )),
             ('answers', QuizAnswers()),
         ]))
+    summary = blocks.RichTextBlock(
+        features=[
+            'ol', 'ul', 'bold', 'italic', 'link', 'image', 'document-link',
+        ],
+        blank=True,
+        required=False,
+    )
 
     class Meta:
         icon = 'grip'
