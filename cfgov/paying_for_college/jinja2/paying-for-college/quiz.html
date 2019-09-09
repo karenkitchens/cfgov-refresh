@@ -21,16 +21,16 @@
 
 {% import 'templates/render_block.html' as render_block with context %}
 
-<div class="">
-    <div class="quiz-situation" id="{{ value.situation_id }}">
+<div class="quiz__container">
+    <div class="quiz__situation" id="{{ value.situation_id }}">
       <h3> Situation </h3> 
         <p> 
           {{ value.situation | richtext }}
         </p>
     </div>
-    <div class="quiz-response">
+    <div class="quiz__question">
       {% for question in value.questions %}
-      <div>{{ question }}</div>
+      <div class="quiz__question-content">{{ question }}</div>
       {% endfor %}
     </div>
 </div>
