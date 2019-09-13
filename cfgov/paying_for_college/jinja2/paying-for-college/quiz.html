@@ -30,7 +30,10 @@
     </div>
     <div class="quiz__question">
       {% for question in value.questions %}
-      <div class="quiz__question-content">{{ question }}</div>
+      <h2>{{ question.subtitle }}</h2>
+      <div class="quiz__question-content">
+        {{ question }}
+      </div>
       {% endfor %}
     </div>
 </div>
