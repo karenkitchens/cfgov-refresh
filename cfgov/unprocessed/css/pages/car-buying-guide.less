@@ -1,0 +1,40 @@
+@import (reference) '../main.less';
+
+.cbg-checklist {
+  .respond-to-print({
+    display: none !important;
+    visibility: hidden;
+  })
+}
+
+.cbg-print-paper {
+  table {
+    td + td {
+      border-left: 1px solid #cfcfcf;
+    }
+  }
+
+  thead {
+    th, td {
+      margin-bottom: unit( 14px / @base-font-size-px, em );
+      font-weight: 600;
+      letter-spacing: 1px;
+      line-height: 1.25;
+      text-transform: uppercase;
+      padding: unit( 12px / @base-font-size-px, em );
+      color: #101820;
+      background: transparent;
+    }
+  }
+
+  tbody {
+    tr {
+      border-bottom: 1px solid #cfcfcf;
+    }
+
+    th, td {
+      padding-bottom: 1.2em;
+      padding-top: 1.2em;
+    }
+  }
+}
