@@ -1,13 +1,45 @@
 @import (reference) '../main.less';
 
+.content_main {
+  .respond-to-print({
+    border-width: 0 !important;
+    margin: 0 !important;
+    display: block !important;
+    position: static !important;
+  });
+
+  > div[class^="block"]:not(:last-child) {
+    .respond-to-print({
+      display: none !important;
+    });
+  }
+
+  &:after {
+    .respond-to-print({
+      border-left: none !important;
+      position:static;
+    });
+  }
+}
+
+header,
+footer,
+.content_sidebar,
 .cbg-checklist {
   .respond-to-print({
     display: none !important;
-    visibility: hidden;
-  })
+  });
 }
 
 .cbg-print-paper {
+  display: none;
+
+  .respond-to-print({
+    display: block !important;
+    position: static !important;
+  });
+
+
   table {
     td + td {
       border-left: 1px solid #cfcfcf;

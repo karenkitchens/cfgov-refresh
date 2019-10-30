@@ -18,8 +18,8 @@ const CLASSES = {
  * @param {HTMLNode} element The root DOM element for this view
  * @returns {Object} The view's public methods
  */
-function printButton( element ) {
-  const _dom = checkDom( element, CLASSES.BUTTON );
+function printButton( element, { btnClass = null, onBeforePrint } ) {
+  const _dom = checkDom( element, btnClass || CLASSES.BUTTON );
 
   /**
    * When printing has finished, show all the hidden elements
@@ -45,6 +45,11 @@ function printButton( element ) {
       .forEach( el => el.classList.add( `${ CLASSES.HIDE }` ) );
 
     window.addEventListener( 'focus', _onAfterPrint );
+
+    if (onBeforePrint) {
+      onBeforePrint();
+    }
+
     window.print();
   }
 

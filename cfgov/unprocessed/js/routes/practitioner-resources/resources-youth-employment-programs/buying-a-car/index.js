@@ -1,4 +1,5 @@
 import updateExpandableButtonText from './expandables';
+import printButtonView from '../../../../../apps/youth-employment-success/js/views/print-button'
 
 const CHECKLIST_GROUP_SELECTOR = 'm-checklist-group';
 const PRINT_BUTTON_SELECTOR = 'js-cbg-print';
@@ -9,6 +10,13 @@ const NEXT_STEPS_TABLE_BODY_SELECTOR = 'cbg-next-steps-body';
 
 const MAX_SELECTED = 3;
 let selectedItems = [];
+
+printButtonView(
+  document.querySelector( `.${ PRINT_BUTTON_SELECTOR }` ), {
+    btnClass: PRINT_BUTTON_SELECTOR,
+    onBeforePrint: handlePrintChecklist
+  }
+).init();
 
 function isMaxItemsSelected() {
   return selectedItems.length === MAX_SELECTED;
@@ -114,10 +122,6 @@ function handlePrintChecklist() {
   const nextStepsTableFragment = buildTableBodyRows( nextStepsTableContent );
 
   document.querySelector( `.${ NEXT_STEPS_TABLE_BODY_SELECTOR }` ).appendChild( nextStepsTableFragment );
-
-  if ( isMaxItemsSelected() ) {
-    printButton.removeEventListener( 'click', handlePrintChecklist );
-  }
 }
 
 const cbgJSONEl = document.getElementById( 'car-buying-guide-json' );
@@ -130,9 +134,6 @@ const checklistLookup = cbgList.reduce( ( memo, element ) => {
 
 const checklistContainer = document.querySelector( `.${ CHECKLIST_GROUP_SELECTOR }` );
 checklistContainer.addEventListener( 'click', handleCheckListItemSelect );
-
-const printButton = document.querySelector( `.${ PRINT_BUTTON_SELECTOR }` );
-printButton.addEventListener( 'click', handlePrintChecklist );
 
 
 function checkbox( id ) {
