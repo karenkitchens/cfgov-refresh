@@ -1,7 +1,6 @@
 import checkbox from './templates/checkbox';
 import checklistGroupView from './checklist-group';
 import checklistMap from './models/checklist-map';
-import paragraph from './templates/paragraph';
 import printButtonView from '../../../../../apps/youth-employment-success/js/views/print-button'
 import selectedItems from './models/selected-items';
 import tableRow from './templates/table-row';
@@ -35,14 +34,27 @@ checklistGroupView(
 
 updateExpandableButtonText();
 
+const TableBuilder = {
+  buildBody(rows) {
 
-function buildTableBodyRows( content ) {
+  },
+  buildRow(contents) {
+    return tableRow(content);
+  }
+}
+
+function buildTableBody( contents ) {
   const fragment = document.createDocumentFragment();
   const temp = document.createElement( 'table' );
   const tempBody = document.createElement( 'tbody' );
 
   temp.appendChild( tempBody );
-  temp.innerHTML = content;
+
+  contents.reduce((rows, rowContent) => {
+    return `${rows}${tableRow(rowContent)}`;
+  }, '')
+
+  temp.innerHTML = contents;
 
   const rows = Array.prototype.slice.call( temp.querySelectorAll( 'tr' ) );
 
@@ -55,18 +67,18 @@ function handlePrintChecklist() {
   const checklistDataElements = items.elements();
   const goalsTableContent = checklistDataElements.reduce( ( memo, item ) => {
     const checklistItem = checkbox( item );
-    const checklistItemDetail = paragraph(checklistLookup.get(item));
-    const row = tableRow([
-      checklistItem,
-      checklistItemDetail
-    ]);
+    const checklistItemDetail = checklistLookup.get(item);
 
-    return `${ memo }${ row }`;
-  }, '' );
+    memo.push([ checklistItem, checklistItemDetail ]);
+
+    return memo;
+  }, [] );
 
   const goalsTableFragment = buildTableBodyRows( goalsTableContent );
 
-  document.querySelector( `.${ GOALS_TABLE_BODY_SELECTOR }` ).appendChild( goalsTableFragment );
+  const goalsTable = document.querySelector( `.${ GOALS_TABLE_BODY_SELECTOR }` );
+  goalTables.innerHTML = '';
+  goalsTable.appendChild( goalsTableFragment );
 
   const remainingItems = checklistLookup.filterKeysBy((key) => {
     return checklistDataElements.indexOf( key ) === -1 ;
@@ -79,5 +91,7 @@ function handlePrintChecklist() {
   }, '' );
   const nextStepsTableFragment = buildTableBodyRows( nextStepsTableContent );
 
-  document.querySelector( `.${ NEXT_STEPS_TABLE_BODY_SELECTOR }` ).appendChild( nextStepsTableFragment );
+  const nextStepsTable = document.querySelector( `.${ NEXT_STEPS_TABLE_BODY_SELECTOR }` );
+  nextStepsTable.innerHTML = '';
+  nextStepsTable.appendChild( nextStepsTableFragment );
 }

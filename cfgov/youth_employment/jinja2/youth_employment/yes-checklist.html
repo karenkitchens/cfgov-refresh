@@ -16,9 +16,9 @@
 
    ========================================================================== #}
 
-<script id="car-buying-guide-json">
-    {{ page }}
-    {{ value.checklist | tojson }}
+
+<script id="car-buying-guide-json">    
+    {{ page.content.stream_data | tojson }}
 </script>
 
 <div class="cbg-checklist">
