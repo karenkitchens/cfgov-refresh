@@ -11,13 +11,13 @@ function selectedItems({ maxElements = 3 } = {}) {
     return items.length === maxElements;
   }
   
-  function addSelected( item ) {
+  function add( item ) {
     if (!isMaxItemsSelected()) {
       items.push( item );
     }
   }
   
-  function removeSelected( item ) {
+  function remove( item ) {
     const copy = items.slice();
   
     copy.splice( items.indexOf( item ), 1 );
@@ -30,7 +30,7 @@ function selectedItems({ maxElements = 3 } = {}) {
   }
 
   function elements() {
-    return items.slice();
+    return items;
   }
 
   function getHead() {
@@ -42,13 +42,13 @@ function selectedItems({ maxElements = 3 } = {}) {
   }
 
   return {
-    addSelected,
+    add,
     elements,
     getHead,
     getLast,
     isMaxItemsSelected,
     length,
-    removeSelected
+    remove
   };
 }
 
