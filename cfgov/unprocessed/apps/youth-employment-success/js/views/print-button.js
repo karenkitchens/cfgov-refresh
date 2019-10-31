@@ -16,10 +16,13 @@ const CLASSES = {
  * that should not be printed.
  *
  * @param {HTMLNode} element The root DOM element for this view
+ * @param {Object} props Props to configure this view
+ * @param {String} props.btnClass Optional container class for this element
+ * @param {Function} props.onBeforePrint Optional hook before page is printed
  * @returns {Object} The view's public methods
  */
-function printButton( element, { btnClass = null, onBeforePrint } ) {
-  const _dom = checkDom( element, btnClass || CLASSES.BUTTON );
+function printButton( element, { btnClass = CLASSES.BUTTON, onBeforePrint } ) {
+  const _dom = checkDom( element, btnClass );
 
   /**
    * When printing has finished, show all the hidden elements

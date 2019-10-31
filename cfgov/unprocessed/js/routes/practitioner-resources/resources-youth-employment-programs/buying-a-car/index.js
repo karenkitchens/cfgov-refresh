@@ -1,3 +1,8 @@
+import checkbox from './templates/checkbox';
+import paragraph from './templates/paragraph';
+import tableRow from './templates/table-row';
+import selectedItems from './models/selected-items';
+import checklistMap from './models/checklist-map';
 import updateExpandableButtonText from './expandables';
 import printButtonView from '../../../../../apps/youth-employment-success/js/views/print-button'
 
@@ -8,8 +13,11 @@ const PRINT_CONTAINER = 'cbg-print-paper';
 const GOALS_TABLE_BODY_SELECTOR = 'cbg-print-goals-body';
 const NEXT_STEPS_TABLE_BODY_SELECTOR = 'cbg-next-steps-body';
 
-const MAX_SELECTED = 3;
-let selectedItems = [];
+const cbgJSONEl = document.getElementById( 'car-buying-guide-json' );
+const cbgList = JSON.parse( cbgJSONEl.innerHTML );
+
+const items = selectedItems();
+const checklistLookup = checklistMap(cbgList);
 
 printButtonView(
   document.querySelector( `.${ PRINT_BUTTON_SELECTOR }` ), {
@@ -17,22 +25,6 @@ printButtonView(
     onBeforePrint: handlePrintChecklist
   }
 ).init();
-
-function isMaxItemsSelected() {
-  return selectedItems.length === MAX_SELECTED;
-}
-
-function addSelected( item ) {
-  selectedItems.push( item );
-}
-
-function removeSelected( item ) {
-  const copy = selectedItems.slice();
-
-  copy.splice( selectedItems.indexOf( item ), 1 );
-
-  selectedItems = copy;
-}
 
 function elementToUncheck( valueToUncheck ) {
   return function uncheckCheckbox() {
@@ -53,29 +45,22 @@ function handleCheckListItemSelect( event ) {
     const selectedItem = target.value;
 
     if ( isSelected( target ) ) {
-      if ( isMaxItemsSelected() ) {
-        const lastSelected = selectedItems[selectedItems.length - 1];
+      if ( items.isMaxItemsSelected() ) {
+        const lastSelected = items.getLast();
         const uncheckCheckboxFn = elementToUncheck( lastSelected );
 
-        removeSelected( lastSelected );
+        items.removeSelected( lastSelected );
 
         /* the browser could schedule a repaint during uncheck op, so
            schedule it to happen at the beginning of the next
            stack frame */
         setTimeout( uncheckCheckboxFn, 0 );
       }
-      addSelected( selectedItem );
+      items.addSelected( selectedItem );
     } else {
-      removeSelected( selectedItem );
+      items.removeSelected( selectedItem );
     }
   }
-}
-
-function filterChecklistItems( toExclude ) {
-  const checklistKeys = Object.keys( checklistLookup );
-
-  return checklistKeys
-    .filter( key => toExclude.indexOf( key ) === -1 );
 }
 
 function buildTableBodyRows( content ) {
@@ -94,28 +79,27 @@ function buildTableBodyRows( content ) {
 }
 
 function handlePrintChecklist() {
-  document.querySelector( `.${ PRINT_CONTAINER }` ).classList.remove( 'u-hidden' );
-
-  const goalsTableContent = selectedItems.reduce( ( memo, item ) => {
-    const checkListItem = checkbox( item );
-    const checklistItemDetail = `<p>${ checklistLookup[item] }</p>`;
-    const row = `
-      <tr>
-        <td>${ checkListItem }</td>
-        <td>${ checklistItemDetail }</td>
-      </tr>
-    `;
+  const goalsTableContent = items.elements().reduce( ( memo, item ) => {
+    const checklistItem = checkbox( item );
+    const checklistItemDetail = paragraph(checklistLookup.get(item));
+    const row = tableRow([
+      checklistItem,
+      checklistItemDetail
+    ]);
 
     return `${ memo }${ row }`;
   }, '' );
+
   const goalsTableFragment = buildTableBodyRows( goalsTableContent );
 
   document.querySelector( `.${ GOALS_TABLE_BODY_SELECTOR }` ).appendChild( goalsTableFragment );
 
-  const remainingItems = filterChecklistItems( selectedItems );
+  const remainingItems = checklistLookup.filterKeysBy((key) => {
+    return items.elements().indexOf( key ) === -1 ;
+  });
   const nextStepsTableContent = remainingItems.reduce( ( memo, item ) => {
     const checkListItem = checkbox( item );
-    const row = `<tr><td>${ checkListItem }</td></tr>`;
+    const row = tableRow(checkListItem);
 
     return `${ memo }${ row }`;
   }, '' );
@@ -124,27 +108,7 @@ function handlePrintChecklist() {
   document.querySelector( `.${ NEXT_STEPS_TABLE_BODY_SELECTOR }` ).appendChild( nextStepsTableFragment );
 }
 
-const cbgJSONEl = document.getElementById( 'car-buying-guide-json' );
-const cbgList = JSON.parse( cbgJSONEl.innerHTML );
-const checklistLookup = cbgList.reduce( ( memo, element ) => {
-  memo[element.item] = element.details;
-
-  return memo;
-}, {} );
-
 const checklistContainer = document.querySelector( `.${ CHECKLIST_GROUP_SELECTOR }` );
 checklistContainer.addEventListener( 'click', handleCheckListItemSelect );
-
-
-function checkbox( id ) {
-  return `
-    <div class="m-form-field m-form-field__checkbox">
-      <input class="a-checkbox" type="checkbox" id="${ id }" name="${ id }">
-      <label class="a-label" for="${ id }">
-        <span>${ id }</span>
-      </label>
-    </div>
-  `;
-}
 
 updateExpandableButtonText();

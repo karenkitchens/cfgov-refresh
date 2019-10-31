@@ -4,7 +4,7 @@
  * @oaram {Number} maxElements The maximum number of elements the data structure can hold
  * @returns {Object} The public methods of this data structure
  */
-function selectedItems({ maxElements = 3 }) {
+function selectedItems({ maxElements = 3 } = {}) {
   let items = [];
 
   function isMaxItemsSelected() {
@@ -25,9 +25,29 @@ function selectedItems({ maxElements = 3 }) {
     items = copy;
   }
 
+  function length() {
+    return items.length;
+  }
+
+  function elements() {
+    return items.slice();
+  }
+
+  function getHead() {
+    return items[0];
+  }
+
+  function getLast() {
+    return items[items.length - 1];
+  }
+
   return {
     addSelected,
+    elements,
+    getHead,
+    getLast,
     isMaxItemsSelected,
+    length,
     removeSelected
   };
 }
