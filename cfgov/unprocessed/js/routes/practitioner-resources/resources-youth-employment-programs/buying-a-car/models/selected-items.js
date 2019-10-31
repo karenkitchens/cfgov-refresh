@@ -1,27 +1,40 @@
+import { assign } from '../../../../../../apps/youth-employment-success/js/util';
+
+const defaultProps = {
+  maxElements: 3,
+  minElements: 1
+};
+
 /**
  * Data structure to manipulate a list of `maxElements` elements
  * @param {Object} props The properties that configure this data structure
- * @oaram {Number} maxElements The maximum number of elements the data structure can hold
+ * @param {Number} maxElements The maximum number of elements the data structure can hold
+ * @param {Number} minElements The minimum number of elements the data structure should have
  * @returns {Object} The public methods of this data structure
  */
-function selectedItems({ maxElements = 3 } = {}) {
+function selectedItems( props ) {
+  const finalProps = assign( {}, defaultProps, props );
   let items = [];
 
   function isMaxItemsSelected() {
-    return items.length === maxElements;
+    return items.length === finalProps.maxElements;
   }
-  
+
+  function isMinItemsSelected() {
+    return items.length >= finalProps.minElements;
+  }
+
   function add( item ) {
-    if (!isMaxItemsSelected()) {
+    if ( !isMaxItemsSelected() ) {
       items.push( item );
     }
   }
-  
+
   function remove( item ) {
     const copy = items.slice();
-  
+
     copy.splice( items.indexOf( item ), 1 );
-  
+
     items = copy;
   }
 
@@ -47,6 +60,7 @@ function selectedItems({ maxElements = 3 } = {}) {
     getHead,
     getLast,
     isMaxItemsSelected,
+    isMinItemsSelected,
     length,
     remove
   };

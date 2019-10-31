@@ -1,4 +1,4 @@
-import tableRow from './templates/table-row';
+import tableRow from '../templates/table-row';
 
 const TBODY_SELECTOR = 'tbody';
 
@@ -15,9 +15,7 @@ function populateTableRows( contents ) {
   const fragment = document.createDocumentFragment();
   const body = buildTableBody();
 
-  const rows = contents.reduce((rows, rowContent) => {
-    return `${rows}${tableRow(rowContent)}`;
-  }, '')
+  const rows = contents.reduce( ( rows, rowContent ) => `${ rows }${ tableRow( rowContent ) }`, '' );
 
   body.innerHTML = rows;
 
@@ -28,18 +26,18 @@ function populateTableRows( contents ) {
   return fragment;
 }
 
-function printTable(element) {
+function printTable( element ) {
   const _dom = element;
 
   return {
-    render(content) {
-      const elementToUpdate = _dom.querySelector(TBODY_SELECTOR);
-      const nextHTML = populateTableRows(content);
+    render( content ) {
+      const elementToUpdate = _dom.querySelector( TBODY_SELECTOR );
+      const nextHTML = populateTableRows( content );
 
       elementToUpdate.innerHTML = '';
       elementToUpdate.appendChild( nextHTML );
     }
-  }
+  };
 }
 
 export default printTable;

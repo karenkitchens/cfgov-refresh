@@ -1,18 +1,18 @@
-import { checkDom, setInitFlag } from "../../../../modules/util/atomic-helpers";
+import { checkDom, setInitFlag } from '../../../../../modules/util/atomic-helpers';
 
-const CLASSES = Object.freeze({
+const CLASSES = Object.freeze( {
   CHECKLIST_GROUP_CONTAINER: 'm-checklist-group'
-});
+} );
 
-function checklistGroup(element, { selectedItems }) {
-  const _dom = checkDom(element, CLASSES.CHECKLIST_GROUP_CONTAINER);
-  
-  function _getChecklistItemNode(checkboxValue) {
+function checklistGroup( element, { selectedItems } ) {
+  const _dom = checkDom( element, CLASSES.CHECKLIST_GROUP_CONTAINER );
+
+  function _getChecklistItemNode( checkboxValue ) {
     const selector = `input[value="${ checkboxValue }"]`;
     return _dom.querySelector( selector );
   }
 
-  function _isInput(node) {
+  function _isInput( node ) {
     return node.tagName === 'INPUT';
   }
 
@@ -22,24 +22,24 @@ function checklistGroup(element, { selectedItems }) {
 
   function _elementToUncheck( valueToUncheck ) {
     return function uncheckCheckbox() {
-      const inputToUncheck = _getChecklistItemNode(valueToUncheck);
+      const inputToUncheck = _getChecklistItemNode( valueToUncheck );
       inputToUncheck.checked = '';
     };
   }
 
-  function _handleChecklistItemSelect(event) {
+  function _handleChecklistItemSelect( event ) {
     const node = event.target;
 
-    if ( _isInput(node) ) {
+    if ( _isInput( node ) ) {
       const selectedItem = node.value;
-  
+
       if ( _isChecked( node ) ) {
         if ( selectedItems.isMaxItemsSelected() ) {
           const lastSelectedVal = selectedItems.getLast();
           const uncheckCheckboxFn = _elementToUncheck( lastSelectedVal );
-  
+
           selectedItems.remove( lastSelectedVal );
-  
+
           /* the browser could schedule a repaint during uncheck op, so
              schedule the uncheck to happen at the beginning of the next
              stack frame */
@@ -55,11 +55,11 @@ function checklistGroup(element, { selectedItems }) {
 
   return {
     init() {
-      if (setInitFlag(_dom)) {
-        _dom.addEventListener('click', _handleChecklistItemSelect);
+      if ( setInitFlag( _dom ) ) {
+        _dom.addEventListener( 'click', _handleChecklistItemSelect );
       }
     }
-  }
+  };
 }
 
 export default checklistGroup;

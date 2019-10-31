@@ -10,6 +10,7 @@ const HTML = `
 describe( 'printButtonView', () => {
   const printMock = jest.fn();
   const printHookMock = jest.fn();
+  const onClickMock = jest.fn();
   let addEventSpy;
   let removeEventSpy;
   let dom;
@@ -55,8 +56,21 @@ describe( 'printButtonView', () => {
     expect( elToToggle.classList.contains( CLASSES.HIDE ) ).toBeFalsy();
   } );
 
-  it('calls its onBeforePrint hook, if provided', () => {
+  it( 'calls its onBeforePrint hook, if provided', () => {
     simulateEvent( 'click', dom );
-    expect(printHookMock).toHaveBeenCalled();
-  });
+    expect( printHookMock ).toHaveBeenCalled();
+  } );
+
+  it( 'calls its parent click handling function, if supplied', () => {
+    document.body.innerHTML = ''
+    document.body.innerHTML = HTML;
+    
+    dom = document.querySelector( `.${ CLASSES.BUTTON }` );
+    view = printButton( dom, { onClick: onClickMock })
+    view.init();
+
+    simulateEvent( 'click', dom );
+    expect( onClickMock ).toHaveBeenCalled();
+    expect( typeof onClickMock.mock.calls[0][1] === 'function' ).toBeTruthy();
+  } );
 } );

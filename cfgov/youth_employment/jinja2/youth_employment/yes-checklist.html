@@ -16,7 +16,6 @@
 
    ========================================================================== #}
 
-
 <script id="car-buying-guide-json">    
     {{ page.content.stream_data | tojson }}
 </script>
@@ -31,7 +30,18 @@
     <p class="a-label h4 u-mb0">
       Which three items will you start with?
     </p>
-    <p><small>Choose three</small></p>
+    <p><small>Choose at least one, and up to five items</small></p>
+  </div>
+
+  <div class="block block__sub u-hidden cbg-checklist-error">
+    <div class="m-notification
+                m-notification__visible
+                m-notification__error">
+              {% include "icons/error-round.svg" %}
+      <div class="m-notification_content">
+        <div class="h4 m-notification_message">Choose at least one item you'd like to work on.</div>
+      </div>
+    </div>
   </div>
 
   <div class="m-checklist-group">
