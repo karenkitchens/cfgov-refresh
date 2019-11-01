@@ -59,9 +59,7 @@ function printButton( element, { btnClass = CLASSES.BUTTON, onBeforePrint, onCli
   }
 
   function _handleClick( event ) {
-    console.log('handlee')
     if ( onClick ) {
-      console.log('onclick??')
       onClick( event, _print );
     } else {
       _print( event );
