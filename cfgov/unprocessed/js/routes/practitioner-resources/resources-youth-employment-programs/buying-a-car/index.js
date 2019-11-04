@@ -1,3 +1,4 @@
+import Expandable from 'cf-expandables/src/Expandable';
 import checkbox from './templates/checkbox';
 import checklistGroupView from './views/checklist-group';
 import checklistMap from './models/checklist-map';
@@ -14,15 +15,32 @@ const PRINT_BUTTON_SELECTOR = 'js-cbg-print';
 const GOALS_TABLE_SELECTOR = 'cbg-print-goals';
 const NEXT_STEPS_TABLE_SELECTOR = 'cbg-print-next-steps';
 
-const cbgJSONEl = document.getElementById( 'car-buying-guide-json' );
-const cbgChecklistData = JSON.parse( cbgJSONEl.innerHTML );
+const EXPANDABLE_UI_CLASSES = Expandable.prototype.ui;
+const EXPANDABLE_GROUP_SELECTOR = Expandable.prototype.classes.group;
+const expandableEls = Array.prototype.slice.call(
+  document.querySelectorAll(
+    `${ EXPANDABLE_UI_CLASSES.base }`
+  )
+)
+  .filter( e => e.parentNode.classList.contains( EXPANDABLE_GROUP_SELECTOR ) );
+
+const expandableData = expandableEls.reduce( ( memo, expandable ) => {
+  const labelText = expandable.querySelector( `${ EXPANDABLE_UI_CLASSES.label }` );
+  const content = expandable.querySelector( `
+    ${ EXPANDABLE_UI_CLASSES.content } .rich-text
+  ` );
+
+  memo[labelText.textContent.trim()] = content.innerHTML;
+
+  return memo;
+}, {} );
 
 const items = selectedItems( { maxElements: 5 } );
-const checklistLookup = checklistMap( cbgChecklistData );
+const checklistLookup = checklistMap( expandableData );
 
 const errorView = error( document.querySelector( `.${ error.CONTAINER }` ) );
 
-updateExpandableButtonText();
+updateExpandableButtonText( expandableEls );
 
 checklistGroupView(
   document.querySelector( `.${ CHECKLIST_GROUP_SELECTOR }` ), {

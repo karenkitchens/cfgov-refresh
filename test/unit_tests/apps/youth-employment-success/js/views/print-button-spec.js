@@ -62,11 +62,11 @@ describe( 'printButtonView', () => {
   } );
 
   it( 'calls its parent click handling function, if supplied', () => {
-    document.body.innerHTML = ''
+    document.body.innerHTML = '';
     document.body.innerHTML = HTML;
-    
+
     dom = document.querySelector( `.${ CLASSES.BUTTON }` );
-    view = printButton( dom, { onClick: onClickMock })
+    view = printButton( dom, { onClick: onClickMock } );
     view.init();
 
     simulateEvent( 'click', dom );
